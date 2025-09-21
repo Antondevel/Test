@@ -408,7 +408,7 @@ body {
     position: absolute;
     /* уже есть у тебя, но на всякий случай */
     left: 20px;
-    top: 20px;
+    top: 60px;
     z-index: 80;
 }
 
@@ -511,4 +511,5 @@ body {
 /* hover visual */
 .lang-popup .lang:hover {
     filter: brightness(1.05);
+
 }
