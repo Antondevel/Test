@@ -1,0 +1,514 @@
+/* ========== Reset & base ========== */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: #cfcfcf;
+    overflow: hidden;
+    /* no scroll */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #111;
+    height: 100vh;
+}
+
+/* Container positioning */
+.site-header {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.logo {
+    width: 180px;
+
+    position: relative;
+}
+
+/* stroke is visible (contour) */
+.logo-stroke {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* fill wrapper (initially clipped) */
+.logo-fill-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.logo-fill {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform-origin: center center;
+    /* start with clip (hidden), animate to show from bottom to top */
+    clip-path: inset(100% 0 0 0);
+    -webkit-clip-path: inset(100% 0 0 0);
+    animation: logoFill 1.6s cubic-bezier(.2, .9, .3, 1) 0.6s forwards;
+}
+
+@keyframes logoFill {
+    to {
+        clip-path: inset(0 0 0 0);
+        -webkit-clip-path: inset(0 0 0 0);
+    }
+}
+
+/* wrapper near logo */
+.lang-wrap {
+    position: absolute;
+    left: 20px;
+    /* положение триггера (подправь по макету) */
+    top: 20px;
+    z-index: 80;
+}
+
+/* тригер */
+.lang-trigger {
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* popup (скрыт по умолчанию) */
+
+
+
+
+
+/* ====== Hero (center content) ====== */
+.hero {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* yellow glowing spot behind title */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 56vmax;
+    height: 56vmax;
+    max-width: 1200px;
+    max-height: 1200px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -40%);
+    background: radial-gradient(circle at center, #ffd34f 0%, #ffd34f 30%, rgba(255, 211, 79, 0.1) 50%, rgba(255, 211, 79, 0.0) 70%);
+    filter: blur(40px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Main title */
+.main-title {
+    font-family: "Montserrat", "Rubik", sans-serif;
+    font-weight: 900;
+    line-height: 0.92;
+    font-size: clamp(36px, 7vw, 140px);
+    text-align: center;
+    letter-spacing: 2px;
+    z-index: 12;
+    margin: 0;
+    display: inline-block;
+    color: #222;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.15s linear;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+
+}
+
+/* split lines to mimic макет */
+.main-title span {
+    display: block;
+}
+
+.subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* small showreel circle on right-lower of center */
+.showreel .circle-text {
+    width: 100px;
+    height: 100px;
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 74%;
+    left: 62.5%;
+    z-index: 10;
+
+}
+
+
+.showreel .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #111;
+    position: absolute;
+    top: 80.8%;
+    left: 65.5%;
+    z-index: 10;
+
+}
+
+.showreel .circle-text {
+    font-size: 12px;
+    transform: rotate(-90deg);
+    transform-box: fill-box;
+    /* для корректного вращения */
+    transform-origin: 50% 50%;
+    /* вращаем относительно центра */
+    white-space: nowrap;
+    font-weight: 500;
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+
+@keyframes rotateCounter {
+    from {
+        transform: rotate(-90deg);
+    }
+
+    to {
+        transform: rotate(-450deg);
+        /* -90 - 360 */
+    }
+}
+
+.showreel:hover .circle-text {
+    animation: rotateCounter 8s linear infinite;
+}
+
+/* запуск при наведении */
+.showreel:hover .circle-text {
+    animation: rotateCounter 8s linear infinite;
+}
+
+/* ===== nav items (left, right, bottom) ===== */
+.site-nav {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+}
+
+/* common nav item */
+.nav-item {
+    position: absolute;
+    display: inline-block;
+    text-decoration: none;
+    color: #111;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.0);
+    /* border: 2px solid rgba(0, 0, 0, 0.06); */
+    padding: 10px 10px;
+    transition: color .28s ease, transform .5s cubic-bezier(.2, .9, .3, 1);
+    pointer-events: auto;
+    user-select: none;
+    font-family: "Rubik", sans-serif;
+    letter-spacing: .6px;
+}
+
+/* left side vertical — rotated text */
+.side.left {
+    left: 14px;
+    top: 50%;
+    transform-origin: center;
+    transform: translateY(-50%) rotate(-90deg);
+    box-shadow: inset 0 0 0 16px rgba(255, 255, 255, 0.0);
+    border-radius: 4px;
+}
+
+/* right side vertical */
+.side.right {
+    right: 14px;
+    top: 50%;
+    transform-origin: center;
+    transform: translateY(-50%) rotate(90deg);
+    border-radius: 4px;
+}
+
+/* bottom central small box */
+.nav-item.bottom {
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-weight: 700;
+}
+
+/* underline effect using pseudo-element: expands left->right */
+.nav-item::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    background: #fff;
+    bottom: -6px;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform .36s cubic-bezier(.2, .9, .3, 1);
+    border-radius: 2px;
+    opacity: 0;
+    /* visible only on hover */
+}
+
+/* Hover: text becomes white, underline appears from left to right, plus rotation CCW */
+.nav-item:hover {
+    color: #fff;
+
+}
+
+.nav-item:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
+
+/* apply a short single rotation on hover */
+.nav-item:hover>* {
+    animation: none;
+}
+
+/* none for children */
+.nav-item:hover {
+    animation: spin-ccw .6s linear;
+}
+
+/* ===== Background marquee diagonal text ===== */
+.bg-marquees {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    display: block;
+}
+
+/* базовый стиль */
+.marquee-row {
+    position: absolute;
+    width: 300%;
+    opacity: 0.06;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 120px);
+    white-space: nowrap;
+    letter-spacing: 6px;
+    transform: rotate(-25deg);
+    /* наклон */
+    transform-origin: left center;
+}
+
+/* позиции строк */
+.marquee-row.row-a {
+    top: 20%;
+    left: 80%;
+    /* начинаем слева */
+}
+
+.marquee-row.row-b {
+    top: 0%;
+    left: 80%;
+    /* тоже слева, но выше */
+}
+
+.marquee-row.second {
+    opacity: 0.04;
+}
+
+/* текст внутри */
+.marquee-content {
+    display: inline-block;
+    padding-right: 50px;
+    /* расстояние между повторениями */
+}
+
+/* движение только по X, вдоль наклонённой линии */
+.row-a .marquee-content {
+    animation: marqueeLeft 40s linear infinite;
+}
+
+.row-b .marquee-content {
+    animation: marqueeRight 40s linear infinite;
+}
+
+/* анимации */
+@keyframes marqueeLeft {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes marqueeRight {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+
+
+
+
+/* ===== Lang popup (replace your old lang-popup rules) ===== */
+.lang-trigger img {
+    width: 28px;
+    height: 28px;
+    display: block;
+}
+
+.lang-wrap {
+    position: absolute;
+    /* уже есть у тебя, но на всякий случай */
+    left: 20px;
+    top: 20px;
+    z-index: 80;
+}
+
+/* контейнер popup — расположен относительно .lang-wrap */
+.lang-popup {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px);
+    /* справа от триггера */
+    transform: translateY(-50%) translateX(-8px);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .28s ease, transform .28s cubic-bezier(.2, .9, .3, 1);
+    z-index: 70;
+}
+
+/* видимый стейт — JS должен вешать класс .show */
+.lang-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* кнопки внутри */
+.lang-popup .lang {
+    position: relative;
+    overflow: hidden;
+    min-width: 52px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: transparent;
+    /* фон делает ::before */
+    cursor: pointer;
+    transform: translateX(-12px);
+    opacity: 0;
+    transition: transform .36s cubic-bezier(.2, .9, .3, 1), opacity .28s ease;
+}
+
+/* оверлей (slide left->right) */
+.lang-popup .lang::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateX(-100%);
+    /* скрыт слева */
+    transition: transform .36s cubic-bezier(.2, .9, .3, 1);
+    z-index: 0;
+}
+
+/* текст поверх оверлея */
+.lang-popup .lang>span {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-weight: 700;
+    transform: translateX(-10px);
+    opacity: 0;
+    transition: transform .36s cubic-bezier(.2, .9, .3, 1), opacity .28s ease;
+}
+
+/* последовательное появление (подгоняй задержки под дизайн) */
+.lang-popup.show .lang:nth-child(1)::before {
+    transition-delay: .05s;
+    transform: translateX(0);
+}
+
+.lang-popup.show .lang:nth-child(1) {
+    transition-delay: .05s;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.lang-popup.show .lang:nth-child(1)>span {
+    transition-delay: .12s;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.lang-popup.show .lang:nth-child(2)::before {
+    transition-delay: .18s;
+    transform: translateX(0);
+}
+
+.lang-popup.show .lang:nth-child(2) {
+    transition-delay: .18s;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.lang-popup.show .lang:nth-child(2)>span {
+    transition-delay: .26s;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* hover visual */
+.lang-popup .lang:hover {
+    filter: brightness(1.05);
+}

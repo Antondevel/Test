@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Full-Cycle Event Agency — mock</title>
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="media.css">
+</head>
+
+<body>
+    <header class="site-header" role="banner">
+        <!-- Logo -->
+        <div class="logo" id="logo" aria-label="MOZGI logo">
+            <!-- stroke -->
+            <svg class="logo-stroke" viewBox="0 0 260 40" preserveAspectRatio="xMidYMid meet"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <text x="50%" y="70%" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="55"
+                    font-weight="700" fill="transparent" stroke="#111" stroke-width="1.5">MOZGI</text>
+            </svg>
+
+            <!-- fill -->
+            <div class="logo-fill-wrap">
+                <svg class="logo-fill" viewBox="0 0 260 40" preserveAspectRatio="xMidYMid meet"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <text x="50%" y="70%" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="55"
+                        font-weight="900" fill="#111">MOZGI</text>
+                </svg>
+            </div>
+            <p class="subtitle">EVENT</p>
+        </div>
+        <!-- помести рядом с логотипом внутри .site-header -->
+        <div class="lang-wrap">
+            <div class="lang-trigger" aria-label="Select language" role="button" tabindex="0">
+                <img src="/pic/free-icon-globe-3155839.png" class="icon-globe" alt="Globe icon">
+            </div>
+
+            <div class="lang-popup" id="langPopup" aria-hidden="true">
+                <a class="lang" href="#"><span>ENG</span></a>
+                <a class="lang" href="#"><span>UA</span></a>
+            </div>
+        </div>
+
+
+
+
+
+    </header>
+
+
+
+
+    <!-- Navigation -->
+    <nav class="site-nav" role="navigation" aria-label="Main">
+        <a class="nav-item side left" href="#">where?</a>
+        <a class="nav-item side right" href="#">what?</a>
+        <a class="nav-item bottom" id="whoBtn" href="#">who?</a>
+    </nav>
+
+    <main class="hero" role="main">
+        <h1 class="main-title">
+            <span>FULL-CYCLE</span>
+            <span>EVENT AGENCY</span>
+        </h1>
+
+        <!-- decorative circle -->
+        <div class="showreel" aria-hidden="true">
+            <div class="dot"></div>
+            <svg viewBox="0 0 100 100" class="circle-text">
+                <defs>
+                    <path id="circlePath" d="M50,50 m-35,0 a35,35 0 1,1 70,0 a35,35 0 1,1 -70,0" />
+                </defs>
+                <text font-size="10" font-family="Montserrat, sans-serif" font-weight="500" fill="rgb(255, 255, 255)">
+                    <textPath href="#circlePath" startOffset="0%">
+                        SHOWREEL • SHOWREEL • SHOWREEL •
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+
+    </main>
+
+    <!-- background marquees -->
+    <div class="bg-marquees" aria-hidden="true">
+        <div class="marquee-row row-a">
+            <div class="marquee-content">EVENT AGENCY EVENT AGENCY EVENT AGENCY</div>
+        </div>
+        <div class="marquee-row row-b second">
+            <div class="marquee-content">FULL-CYCLE FULL-CYCLE FULL-CYCLE</div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        const trigger = document.querySelector('.lang-trigger');
+        const popup = document.getElementById('langPopup');
+
+        if (!trigger || !popup) {
+            console.warn('lang trigger or popup not found');
+        } else {
+            let closeTimer = null;
+
+            // accessibility attrs
+            trigger.setAttribute('aria-haspopup', 'true');
+            trigger.setAttribute('aria-expanded', 'false');
+            popup.setAttribute('aria-hidden', 'true');
+
+            function open() {
+                clearTimeout(closeTimer);
+                popup.classList.add('show');  // единый класс
+                popup.setAttribute('aria-hidden', 'false');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+
+            function close() {
+                clearTimeout(closeTimer);
+                popup.classList.remove('show');
+                popup.setAttribute('aria-hidden', 'true');
+                trigger.setAttribute('aria-expanded', 'false');
+            }
+
+            function scheduleClose(delay = 120) {
+                clearTimeout(closeTimer);
+                closeTimer = setTimeout(() => {
+                    if (
+                        !popup.matches(':hover') &&
+                        !trigger.matches(':hover') &&
+                        document.activeElement !== popup
+                    ) {
+                        close();
+                    }
+                }, delay);
+            }
+
+            // hover
+            trigger.addEventListener('mouseenter', open);
+            trigger.addEventListener('mouseleave', () => scheduleClose(120));
+            popup.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+            popup.addEventListener('mouseleave', () => scheduleClose(120));
+
+            // click/touch (для мобільних)
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                popup.classList.contains('show') ? close() : open();
+            });
+            trigger.addEventListener(
+                'touchstart',
+                (e) => {
+                    if (!popup.classList.contains('show')) {
+                        e.preventDefault();
+                        open();
+                    }
+                },
+                { passive: false }
+            );
+
+            // accessibility: ESC и focusout
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') close();
+            });
+            popup.addEventListener('focusout', (e) => {
+                const to = e.relatedTarget;
+                if (!popup.contains(to) && to !== trigger) scheduleClose(0);
+            });
+        }
+
+        // --- движение заголовка ---
+        const title = document.querySelector(".main-title");
+        document.addEventListener("mousemove", (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            title.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    </script>
+
+</body>
+
+</html>
